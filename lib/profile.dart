@@ -1,191 +1,100 @@
 import 'package:flutter/material.dart';
+import 'package:profile/models/user_model.dart';
+import 'profile.dart';
 
-void main() {
-  runApp(const MyApp());
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool passwordVisible = false;
+
+  final dummyUser = User(username: 'admin', password: 'admin123');
+
+  void _login() {
+    String inputUsername = usernameController.text.trim();
+    String inputPassword = passwordController.text;
+
+    if (inputUsername == dummyUser.username && inputPassword == dummyUser.password) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Username atau password salah!'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ProfilePage(),
-    );
-  }
-}
-
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
-
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  bool temaGelap = true;
-
-  void gantiTema() {
-    setState(() {
-      temaGelap = !temaGelap;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Color background = temaGelap ? Colors.black : Colors.yellow[100]!;
-    final Color textColor = temaGelap ? Colors.white : Colors.black;
-    final Color headerColor = temaGelap ? Colors.purple[800]! : Colors.deepPurple[100]!;
-
     return Scaffold(
-      body: AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
-        color: background,
-        child: SafeArea(
+      backgroundColor: Colors.deepPurple[50],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                color: headerColor,
-                padding: const EdgeInsets.all(16),
+              const Icon(Icons.lock, size: 80, color: Colors.deepPurple),
+              const SizedBox(height: 20),
+              const Text(
+                'Selamat Datang!',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 30),
+              TextField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  prefixIcon: const Icon(Icons.person),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: passwordController,
+                obscureText: !passwordVisible,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(passwordVisible ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                  ),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
                 width: double.infinity,
-                child: Text(
-                  'Profile',
-                  style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('images/profile.png'),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                '@Gaten.mbledos',
-                style: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  ProfileStat(label: 'Following', value: '1'),
-                  SizedBox(width: 16),
-                  ProfileStat(label: 'Followers', value: '12M'),
-                  SizedBox(width: 16),
-                  ProfileStat(label: 'Likes', value: '1k'),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(onPressed: () {}, child: const Text('Edit Profile')),
-                  const SizedBox(width: 8),
-                  ElevatedButton(onPressed: () {}, child: const Text('Share Profile')),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.person_add, color: textColor),
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: const EdgeInsets.all(12),
-                    ),
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Add bio'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[800],
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const IconBar(),
-              const SizedBox(height: 8),
-
-              /// 🔘 Tombol Ganti Tema
-              ElevatedButton(
-                onPressed: gantiTema,
-                child: const Text('Ganti Tema'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-              Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(8),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 4,
-                    mainAxisSpacing: 4,
-                  ),
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(
-                          image: AssetImage('images/image_${index + 1}.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  },
+                  child: const Text('Login', style: TextStyle(fontSize: 18)),
                 ),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class ProfileStat extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const ProfileStat({required this.label, required this.value, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.grey),
-        ),
-      ],
-    );
-  }
-}
-
-class IconBar extends StatelessWidget {
-  const IconBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: const [
-        Icon(Icons.article, color: Colors.white),
-        Icon(Icons.lock_outline, color: Colors.white),
-        Icon(Icons.inventory_2, color: Colors.white),
-        Icon(Icons.link, color: Colors.white),
-        Icon(Icons.favorite_border, color: Colors.white),
-      ],
     );
   }
 }
