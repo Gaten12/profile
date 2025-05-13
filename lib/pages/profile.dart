@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profile/models/iconbar.dart';
+import 'package:profile/models/profilestat.dart';
 
 void main() {
   runApp(const MyApp());
@@ -149,43 +151,4 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class ProfileStat extends StatelessWidget {
-  final String label;
-  final String value;
 
-  const ProfileStat({required this.label, required this.value, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.grey),
-        ),
-      ],
-    );
-  }
-}
-
-class IconBar extends StatelessWidget {
-  const IconBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: const [
-        Icon(Icons.article, color: Colors.white),
-        Icon(Icons.lock_outline, color: Colors.white),
-        Icon(Icons.inventory_2, color: Colors.white),
-        Icon(Icons.link, color: Colors.white),
-        Icon(Icons.favorite_border, color: Colors.white),
-      ],
-    );
-  }
-}

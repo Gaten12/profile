@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:profile/models/user_model.dart';
-import 'profile.dart';
+import 'package:profile/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/user_model.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,23 +15,41 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool passwordVisible = false;
+  bool _isLoading = false;
 
   final dummyUser = User(username: 'admin', password: 'admin123');
 
-  void _login() {
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     String inputUsername = usernameController.text.trim();
     String inputPassword = passwordController.text;
 
+    await Future.delayed(const Duration(seconds: 2)); // simulasi loading
+
     if (inputUsername == dummyUser.username && inputPassword == dummyUser.password) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+
+      setState(() {
+        _isLoading = false;
+      });
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ProfilePage()),
+        MaterialPageRoute(builder: (context) => const MainNavigation()),
       );
     } else {
+      setState(() {
+        _isLoading = false;
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Username atau password salah!'),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.red,
         ),
       );
     }
@@ -83,12 +103,16 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: _login,
+                  onPressed: _isLoading ? null : _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
-                  child: const Text('Login', style: TextStyle(fontSize: 18)),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  )
+                      : const Text('Login', style: TextStyle(fontSize: 18)),
                 ),
               ),
             ],
