@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profile/models/iconbar.dart';
 import 'package:profile/models/profilestat.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,8 +60,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(Icons.logout, color: textColor),
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/login');
+                      onPressed: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('isLoggedIn', false);  // Set status login ke false
+                        Navigator.pushReplacementNamed(context, '/login');  // Navigasi ke halaman login
                       },
                     ),
                   ],
