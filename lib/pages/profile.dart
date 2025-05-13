@@ -62,8 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       icon: Icon(Icons.logout, color: textColor),
                       onPressed: () async {
                         final prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool('isLoggedIn', false);  // Set status login ke false
-                        Navigator.pushReplacementNamed(context, '/login');  // Navigasi ke halaman login
+                        await prefs.setBool('isLoggedIn', false);
+                        Navigator.pushReplacementNamed(context, '/login');
                       },
                     ),
                   ],

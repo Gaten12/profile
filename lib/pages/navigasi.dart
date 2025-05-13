@@ -12,7 +12,7 @@ class MainNavigation extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  int _currentIndex = 0; // Menyimpan index navbar
+  int _currentIndex = 0;
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -29,20 +29,20 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex], // Menampilkan halaman sesuai index
+      body: _pages[_currentIndex],
       bottomNavigationBar: AnimatedBottomNavigationBar(
         activeIndex: _currentIndex,
-        icons: _icons, // Menggunakan icon yang sudah didefinisikan
+        icons: _icons,
         activeColor: Colors.purple,
         inactiveColor: Colors.grey,
-        gapLocation: GapLocation.end, // Mengubah gapLocation menjadi 'end'
+        gapLocation: GapLocation.end,
         onTap: (index) {
           setState(() {
-            _currentIndex = index; // Mengubah index ketika tap
+            _currentIndex = index;
           });
         },
-        iconSize: 30, // Sesuaikan ukuran ikon sesuai keinginan
-        elevation: 8, // Mengatur bayangan pada navbar
+        iconSize: 30,
+        elevation: 8,
       ),
     );
   }

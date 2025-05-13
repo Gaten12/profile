@@ -23,9 +23,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login Demo',
-      // Tambahkan rute untuk login
       routes: {
-        '/login': (context) => const LoginPage(),  // Definisikan rute login
+        '/login': (context) => const LoginPage(),
       },
       home: FutureBuilder<bool>(
         future: _cekLogin(),
