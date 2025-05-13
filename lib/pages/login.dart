@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profile/main.dart';
+import 'package:profile/pages/navigasi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 

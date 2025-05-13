@@ -49,11 +49,21 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Container(
                 color: headerColor,
-                padding: const EdgeInsets.all(16),
-                width: double.infinity,
-                child: Text(
-                  'Profile',
-                  style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Profile',
+                      style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.logout, color: textColor),
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/login');
+                      },
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),
@@ -150,5 +160,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-
